@@ -9,6 +9,8 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
+headers = {'user-agent': 'Mozilla/5.0 (Macintosh Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36'}
+
 class igdownload():
 #以下為單個文章連結下載照片
     def __init__(self):
@@ -16,7 +18,7 @@ class igdownload():
             os.makedirs(ID)
     def fromcontext(self,url):
         #url = input("請輸入網址：")
-        res = requests.get(url)
+        res = requests.get(url,headers = headers)
         soup = BeautifulSoup(res.text,'lxml')
         json_part = soup.find_all("script", type="text/javascript")[3].string
         json_part = json_part[json_part.find('=')+2:-1]
@@ -46,7 +48,7 @@ class igdownload():
 #取得第一頁之各個文章連結
 ID = input('請輸入要抓取的帳號：')
 url = 'https://www.instagram.com/'+ ID +'/'
-res = requests.get(url)
+res = requests.get(url,headers = headers)
 soup = BeautifulSoup(res.text,'html.parser')
 json_part = soup.find_all("script", type="text/javascript")[3].string
 json_part = json_part[json_part.find('=')+2:-1]
@@ -64,7 +66,7 @@ userid = data['entry_data']['ProfilePage'][0]['graphql']['user']['id']
 #取得第二頁後各個文章連結
 for b in range(int(count/12)):
     rurl = 'https://www.instagram.com/graphql/query/?query_hash=f2405b236d85e8296cf30347c9f08c2a&variables=%7B%22id%22%3A%22'+ userid +'%22%2C%22first%22%3A12%2C%22after%22%3A%22'+ aftercode.replace('=','') +'%3D%3D"%7D'
-    rres = requests.get(rurl)
+    rres = requests.get(rurl,headers = headers)
     rsoup = BeautifulSoup(rres.text,'html.parser')
     rdata = json.loads(rsoup.text)
     ra = rdata['data']['user']['edge_owner_to_timeline_media']['edges']
