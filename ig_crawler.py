@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jun 14 10:40:11 2019
-<<<<<<< HEAD
-=======
 
->>>>>>> b14bb778e85e2c527b9c340b5f95c31520c48c05
 @author: user
 """
 import os
@@ -29,7 +26,6 @@ class igdownload():
         # 如果有多張照片
         try:
             for i in range(len(a['edge_sidecar_to_children']['edges'])):
-                # print (a['edge_sidecar_to_children']['edges'][i]['node']['display_url'])
                 image_url = a['edge_sidecar_to_children']['edges'][i]['node']['display_url']
                 img_data = requests.get(image_url).content
                 with open('./'+ID+'/'+str(i+1) + url.split('/')[4] + '.jpg', 'wb') as handler:
